@@ -1,5 +1,6 @@
 class Empresa {
-    constructor(nombre, ubicacion, telefono, descripcion, horario, tipoEmpresa, idCategoria) {
+    constructor(id, nombre, ubicacion, telefono, descripcion, horario, tipoEmpresa, idCategoria) {
+      this.id = id;
       this.nombre = nombre;
       this.ubicacion = ubicacion;
       this.telefono = telefono;
