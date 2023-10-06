@@ -1,6 +1,10 @@
 const db = require('./config/db.js');
 const empresaDAO = require('./dataAccess/empresaDAO.js');
+const categoriaDAO = require('./dataAccess/categoriaDAO.js');
+const usuarioDAO = require('./dataAccess/usuarioDAO.js');
 const Empresa = require('./models/empresaModel.js');
+const Categoria = require('./models/categoriaModel.js');
+const Usuario = require('./models/usuarioModel.js');
 
 db.connect((err) => {
     if (err) {
@@ -9,67 +13,125 @@ db.connect((err) => {
     }
     console.log('conexion exitosa');
 
+    //--------------------------------------------------------------------------------------------------EMPRESA--------------------------------------------------------------------------------------------------
 
-    const nuevaEmpresa = new Empresa('Sabritas', 'Parque Industrial', 64414163352, 'Empresa nacional', 'Lunes-Viernes', 'Manufacturera');
+    const nuevaEmpresa = new Empresa('Sabritas', 'Parque Industrial', 64414163352, 'Empresa nacional', 'Lunes-Viernes', 'Manufacturera', 1);
 
-      productDAO.insertProduct(nuevaEmpresa, (result, err) => {
+      empresaDAO.insertarEmpresa(nuevaEmpresa, (result, err) => {
          if (err) {
              console.error('error al insertar en la base datos' + err);
          } else {
-              console.log('emresa insertada' + result);
+              console.log('empresa insertada' + result);
           }
       })
 
-    //   productDAO.insertProductPromise(newProduct).then(resolve => {
-    //       console.log(resolve)
-    //   }).catch(reject => {
-    //       console.log('se agrego el producto')
-    //   })
+    empresaDAO.consultarEmpresas((result, err) => {
+         if (err) {
+             console.error('error al consultar la base de datos' + err);
+         } else {
+             console.log(result);
+         }
+     })
+
+    const newEmpresa = new Empresa('Sabritas', 'Parque Industrial', 64414163352, 'Empresa nacional', 'Lunes-Viernes', 'Manufacturera', 1);
+
+    empresaDAO.actualizarEmpresa(newEmpresa, (result, err) => {
+         if (err) {
+             console.error('error al actualizar la base de datos' + err);
+         } else {
+             console.log('se actualizo la base de datos');
+         }
+     })
+
+    empresaDAO.eliminarEmpresa(2, (result, err) => {
+         if (err) {
+             console.error('error al borrar de la base datos' + err);
+         } else {
+             console.log('empresa borrada');
+         }
+     })
 
 
-    // productDAO.selectProducts((result, err) => {
-    //     if (err) {
-    //         console.error('error al consultar la base de datos' + err);
-    //     } else {
-    //         console.log(result);
-    //     }
-    // })
+     //--------------------------------------------------------------------------------------------------CATEGORIA--------------------------------------------------------------------------------------------------
 
-    //   productDAO.selectProductsPromise().then(resolve => {
-    //       console.log(resolve)
-    //   }).catch(reject => {
-    //       console.log(reject)
-    //   })
+     
+    const nuevaCategoria = new Categoria('Ventas', 'Empresa local');
 
-    // productDAO.updateProducts(newProduct, (result, err) => {
-    //     if (err) {
-    //         console.error('error al actualizar la base de datos' + err);
-    //     } else {
-    //         console.log('se actualizo la base de datos');
-    //     }
-    // })
+    categoriaDAO.insertarCategoria(nuevaCategoria, (result, err) => {
+       if (err) {
+           console.error('error al insertar en la base datos' + err);
+       } else {
+            console.log('categoria insertada' + result);
+        }
+    })
 
-    //    const newProduct = new Product(3, 'RPG', 10000, 'Tumba avion');
+    categoriaDAO.consultarCategorias((result, err) => {
+        if (err) {
+            console.error('error al consultar la base de datos' + err);
+        } else {
+            console.log(result);
+        }
+    })
 
-    //   productDAO.updateProductsPromise(newProduct).then(resolve =>{
-    //       console.log('se actualizo la base de datos');
-    //   }).catch(reject=>{
-    //       console.error('error al actualizar la base de datos' + reject);
-    //   })
+    const newCategoria = new Categoria('Distribuidor', 'Trigo del Valle del Yaqui');
 
-    // productDAO.deleteProduct(3, (result, err) => {
-    //     if (err) {
-    //         console.error('error al borrar de la base datos' + err);
-    //     } else {
-    //         console.log('producto borrado');
-    //     }
-    // })
+    empresaDAO.actualizarEmpresa(newCategoria, (result, err) => {
+         if (err) {
+             console.error('error al actualizar la base de datos' + err);
+         } else {
+             console.log('se actualizo la base de datos');
+         }
+     })
 
-    //  productDAO.deleteProductPromise(1).then(resolve => {
-    //      console.log('producto borrado');
-    //  }).catch(reject => {
-    //      console.error('error al borrar de la base de datos' + reject);
-    //  })
+
+     empresaDAO.eliminarEmpresa(2, (result, err) => {
+        if (err) {
+            console.error('error al borrar de la base datos' + err);
+        } else {
+            console.log('categoria borrada');
+        }
+    })
+
+
+     //--------------------------------------------------------------------------------------------------USUARIO--------------------------------------------------------------------------------------------------
+
+          
+    const nuevoUsuario = new Usuario('Guillermo Diaz', 'willy@gmail.com', 'paradise');
+
+    usuarioDAO.insertarUsuario(nuevoUsuario, (result, err) => {
+       if (err) {
+           console.error('error al insertar en la base datos' + err);
+       } else {
+            console.log('usuario insertada' + result);
+        }
+    })
+
+    usuarioDAO.consultarUsuarios((result, err) => {
+        if (err) {
+            console.error('error al consultar la base de datos' + err);
+        } else {
+            console.log(result);
+        }
+    })
+
+    const newUsuario = new Categoria('Samuel de Luqie', 'vegetta777@gmai.com', 'planeta');
+
+    usuarioDAO.actualizarUsuario(newUsuario, (result, err) => {
+         if (err) {
+             console.error('error al actualizar la base de datos' + err);
+         } else {
+             console.log('se actualizo la base de datos');
+         }
+     })
+
+
+     usuarioDAO.eliminarUsuario(1, (result, err) => {
+        if (err) {
+            console.error('error al borrar de la base datos' + err);
+        } else {
+            console.log('usuario borrado');
+        }
+    })
 
 
     db.end((err) => {

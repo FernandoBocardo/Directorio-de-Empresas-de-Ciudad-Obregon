@@ -1,12 +1,11 @@
 const db = require('../config/db.js');
 
-class EmpresaDAO {
+class UsuarioDAO {
     constructor() { };
 
-    insertarEmpresa(empresa, callback) {
-        const insertQuery = `INSERT INTO products (nombre, ubicacion, telefono, descripcion, horario, tipoEmpresa) VALUES 
-                            ('${empresa.nombre}', ${empresa.ubicacion}, '${empresa.telefono}', 
-                            '${empresa.descripcion}', '${empresa.horario}', '${empresa.tipoEmpresa}')`
+    insertarUsuario(usuario, callback) {
+        const insertQuery = `INSERT INTO usuarios (nombre, correo, password) VALUES 
+                            ('${usuario.nombre}', '${usuario.correo}', '${usuario.password}')`
         db.query(insertQuery, (err, result) => {
             if (err) {
                 callback(err);
@@ -31,8 +30,8 @@ class EmpresaDAO {
     //     })
     // }
 
-    consultarEmpresa(callback) {
-        const selectQuery = `SELECT * FROM empresa`;
+    consultarUsuarios(callback) {
+        const selectQuery = `SELECT * FROM usuarios`;
 
         db.query(selectQuery, (err, result) => {
             if (err) {
@@ -57,8 +56,8 @@ class EmpresaDAO {
     //     })
     // }
 
-    actualizarEmpresa(empresa, callback) {
-        const updateQuery = ` UPDATE products SET nombre = '${empresa.name}', precio = ${empresa.price}, descripcion = '${empresa.description}' WHERE (id = ${empresa.id})`
+    actualizarUsuario(usuario, callback) {
+        const updateQuery = ` UPDATE usuarios SET nombre = '${usuario.nombre}', correo = '${usuario.correo}', password = '${usuario.password}' WHERE (id = ${usuario.id})`
         db.query(updateQuery, (err, result) => {
             if (err) {
                 callback(err);
@@ -81,8 +80,8 @@ class EmpresaDAO {
     //     })
     // }
 
-    eliminarEmpresa(id, callback) {
-        const updateQuery = ` DELETE FROM empresa WHERE (id = ${id})`
+    eliminarUsuario(id, callback) {
+        const updateQuery = ` DELETE FROM usuarios WHERE (id = ${id})`
         db.query(updateQuery, (err, result) => {
             if (err) {
                 callback(err);
@@ -106,4 +105,4 @@ class EmpresaDAO {
     // }
 }
 
-module.exports = new EmpresaDAO();
+module.exports = new UsuarioDAO();
