@@ -1,12 +1,11 @@
 const db = require('../config/db.js');
 
-class EmpresaDAO {
+class CategoriaDAO {
     constructor() { };
 
-    insertarEmpresa(empresa, callback) {
-        const insertQuery = `INSERT INTO empresas (nombre, ubicacion, telefono, descripcion, horario, tipoEmpresa, idCategoria) VALUES 
-                            ('${empresa.nombre}', '${empresa.ubicacion}', '${empresa.telefono}', 
-                            '${empresa.descripcion}', '${empresa.horario}', '${empresa.tipoEmpresa}', '${empresa.idCategoria}')`
+    insertarCategoria(categoria, callback) {
+        const insertQuery = `INSERT INTO categorias (nombre, descripcion) VALUES 
+                            ('${categoria.nombre}', '${categoria.descripcion}')`
         db.query(insertQuery, (err, result) => {
             if (err) {
                 callback(err);
@@ -31,8 +30,8 @@ class EmpresaDAO {
     //     })
     // }
 
-    consultarEmpresas(callback) {
-        const selectQuery = `SELECT * FROM empresas`;
+    consultarCategorias(callback) {
+        const selectQuery = `SELECT * FROM categorias`;
 
         db.query(selectQuery, (err, result) => {
             if (err) {
@@ -57,8 +56,8 @@ class EmpresaDAO {
     //     })
     // }
 
-    actualizarEmpresa(empresa, callback) {
-        const updateQuery = ` UPDATE empresas SET nombre = '${empresa.nombre}', ubicacion = '${empresa.ubicacion}', telefono = '${empresa.telefono}', descripcion = '${empresa.descripcion}', horario = '${empresa.horario}', tipoEmpresa = '${empresa.tipoEmpresa}', idCategoria = '${empresa.idCategoria}' WHERE (id = ${empresa.id})`
+    actualizarCategoria(categoria, callback) {
+        const updateQuery = ` UPDATE categorias SET nombre = '${categoria.nombre}', descripcion = '${categoria.descripcion}' WHERE (id = ${categoria.id})`
         db.query(updateQuery, (err, result) => {
             if (err) {
                 callback(err);
@@ -81,8 +80,8 @@ class EmpresaDAO {
     //     })
     // }
 
-    eliminarEmpresa(id, callback) {
-        const updateQuery = ` DELETE FROM empresas WHERE (id = ${id})`
+    eliminarCategoria(id, callback) {
+        const updateQuery = ` DELETE FROM categorias WHERE (id = ${id})`
         db.query(updateQuery, (err, result) => {
             if (err) {
                 callback(err);
@@ -106,4 +105,4 @@ class EmpresaDAO {
     // }
 }
 
-module.exports = new EmpresaDAO();
+module.exports = new CategoriaDAO();
