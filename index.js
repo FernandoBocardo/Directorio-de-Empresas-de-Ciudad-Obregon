@@ -10,9 +10,9 @@ db.connect((err) => {
     console.log('conexion exitosa');
 
 
-    const nuevaEmpresa = new Empresa('Sabritas', 'Parque Industrial', 64414163352, 'Empresa nacional', 'Lunes-Viernes', 'Manufacturera');
+    const nuevaEmpresa = new Empresa('Sabritas', 'Parque Industrial', 64414163352, 'Empresa nacional', 'Lunes-Viernes', 'Manufacturera', 1);
 
-      productDAO.insertProduct(nuevaEmpresa, (result, err) => {
+      empresaDAO.insertarEmpresa(nuevaEmpresa, (result, err) => {
          if (err) {
              console.error('error al insertar en la base datos' + err);
          } else {
