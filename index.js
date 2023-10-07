@@ -75,7 +75,7 @@ db.connect((err) => {
 
     const categoriaActualizar = new Categoria(2, 'Distribuidor', 'Trigo del Valle del Yaqui');
 
-    empresaDAO.actualizarEmpresa(categoriaActualizar, (result, err) => {
+    categoriaDAO.actualizarCategoria(categoriaActualizar, (result, err) => {
          if (err) {
              console.error('error al actualizar la base de datos' + err);
          } else {
@@ -84,7 +84,7 @@ db.connect((err) => {
      })
 
 
-     empresaDAO.eliminarEmpresa(3, (result, err) => {
+     categoriaDAO.eliminarCategoria(3, (result, err) => {
         if (err) {
             console.error('error al borrar de la base datos' + err);
         } else {
