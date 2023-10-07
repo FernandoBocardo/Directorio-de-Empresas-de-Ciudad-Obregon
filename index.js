@@ -114,7 +114,7 @@ db.connect((err) => {
         }
     })
 
-    const usuarioActualizar = new Categoria(2, 'Samuel de Luqie', 'vegetta777@gmai.com', 'planeta');
+    const usuarioActualizar = new Usuario(2, 'Samuel de Luqie', 'vegetta777@gmai.com', 'planeta');
 
     usuarioDAO.actualizarUsuario(usuarioActualizar, (result, err) => {
          if (err) {
