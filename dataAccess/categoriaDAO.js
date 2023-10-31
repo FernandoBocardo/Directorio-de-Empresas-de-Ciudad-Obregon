@@ -8,27 +8,14 @@ class CategoriaDAO {
                             ('${categoria.nombre}', '${categoria.descripcion}')`
         db.query(insertQuery, (err, result) => {
             if (err) {
+                console.log("err");
                 callback(err);
             } else {
+                console.log("result");
                 callback(result);
             }
         })
     }
-
-    // insertProductPromise(producto) {
-    //     return new Promise((resolve, reject) => {
-    //         const insertQuery = `INSERT INTO products (nombre, precio, descripcion) VALUES 
-    //                             ('${producto.name}', ${producto.price}, '${producto.description}')`
-
-    //         db.query(insertQuery, (err, result) => {
-    //             if (err) {
-    //                 reject(err);
-    //             } else {
-    //                 resolve(result);
-    //             }
-    //         })
-    //     })
-    // }
 
     consultarCategorias(callback) {
         const selectQuery = `SELECT * FROM categorias`;
@@ -42,19 +29,17 @@ class CategoriaDAO {
         })
     }
 
-    // selectProductsPromise() {
-    //     return new Promise((resolve, reject) => {
-    //         const selectQuery = `SELECT * FROM products`;
+    consultarCategoriaId(idCategoria, callback) {
+        const selectQuery = `SELECT * FROM categorias WHERE (id = '${idCategoria}')`;
 
-    //         db.query(selectQuery, (err, result) => {
-    //             if (err) {
-    //                 reject(err);
-    //             } else {
-    //                 resolve(result);
-    //             }
-    //         })
-    //     })
-    // }
+        db.query(selectQuery, (err, result) => {
+            if (err) {
+                callback(err);
+            } else {
+                callback(result);
+            }
+        })
+    }
 
     actualizarCategoria(categoria, callback) {
         const updateQuery = ` UPDATE categorias SET nombre = '${categoria.nombre}', descripcion = '${categoria.descripcion}' WHERE (id = ${categoria.id})`
@@ -67,19 +52,6 @@ class CategoriaDAO {
         })
     }
 
-    // updateProductsPromise(producto) {
-    //     return new Promise((resolve, reject) => {
-    //         const updateQuery = ` UPDATE products SET nombre = '${producto.name}', precio = ${producto.price}, descripcion = '${producto.description}' WHERE (id = ${producto.id})`
-    //         db.query(updateQuery, (err, result) => {
-    //             if (err) {
-    //                 reject(err);
-    //             } else {
-    //                 resolve(result);
-    //             }
-    //         })
-    //     })
-    // }
-
     eliminarCategoria(id, callback) {
         const updateQuery = ` DELETE FROM categorias WHERE (id = ${id})`
         db.query(updateQuery, (err, result) => {
@@ -91,18 +63,7 @@ class CategoriaDAO {
         })
     }
 
-    // deleteProductPromise(id) {
-    //     return new Promise((resolve, reject) => {
-    //         const updateQuery = ` DELETE FROM products WHERE (id = ${id})`
-    //         db.query(updateQuery, (err, result) => {
-    //             if (err) {
-    //                 reject(err);
-    //             } else {
-    //                 resolve(result);
-    //             }
-    //         })
-    //     })
-    // }
+
 }
 
 module.exports = new CategoriaDAO();

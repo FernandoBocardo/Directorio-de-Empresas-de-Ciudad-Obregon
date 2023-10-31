@@ -1,0 +1,107 @@
+const fs = require('fs');
+const Categoria = require('../models/categoriaModel');
+const CategoriaDAO = require('../dataAccess/categoriaDAO');
+const dataPath = './data/categoria.json';
+
+// Funciones del controlador
+exports.getAllCategorias = async (req, res) => {
+  try {
+    await CategoriaDAO.consultarCategorias((result, err) => {
+        if (err) {
+            console.error('error al consultar la base de datos' + err);
+        } else {
+            //console.log(result);
+            res.json(result);
+        }
+    })
+    
+  } catch (err) {
+    res.status(500).json({ error: 'No se pudieron obtener las categorias' });
+  }
+};
+
+exports.getCategoriaById = async (req, res) => {
+  const categoriaId = req.params.id;
+
+  try {
+    await CategoriaDAO.consultarCategoriaId(categoriaId, (result, err) => {
+      if (err) {
+          console.error('error al consultar la base de datos' + err);
+      } else {
+          //console.log(result);
+          if (result.length === 0) {
+            return res.status(404).json({ error: 'Categoria no encontrada.' });
+          }
+          res.status(200).json(result);
+      }
+    })  
+  } catch (err) {
+      res.status(500).json({ error: 'No se pudo obtener la categoria.' });
+  }
+};
+
+exports.addCategoria = async (req, res) => {
+  try {
+      const datosNuevaCategoria = new Categoria(req.body.id, req.body.nombre, req.body.descripcion);
+
+      await CategoriaDAO.insertarCategoria(datosNuevaCategoria, (result, err) => {
+        if (err) {
+            console.error('Error al insertar en la base de datos' + err);
+        } else {
+            console.log(result);
+            res.json(datosNuevaCategoria);
+        }
+      })  
+  } catch (err) {
+      res.status(500).json({ error: 'No se pudo agregar la categoria' });
+  }
+};
+
+exports.updateCategoria = async (req, res) => {
+  const datosCategoriaActualizar = new Categoria(req.params.id, req.body.nombre, req.body.descripcion);
+
+  try {
+    await CategoriaDAO.actualizarCategoria(datosCategoriaActualizar, (result, err) => {
+      if (err) {
+          console.error('Error al actualizar en la base de datos' + err);
+      } else {
+          console.log(result);
+          if(result.affectedRows === 0)
+          {
+            res.json({ message: 'No existe una categoria con esa ID' });
+          }
+          else
+          {
+            res.json({ message: 'Categoria actualizada exitosamente.' });
+          }
+      }
+    })  
+  } catch (err) {
+      res.status(500).json({ error: 'No se pudo actualizar la categoria' });
+  }
+};
+
+exports.deleteCategoria = async (req, res) => {
+  const categoriaEliminarId = req.params.id;
+
+  try {
+    await CategoriaDAO.eliminarCategoria(categoriaEliminarId, (result, err) => {
+      if (err) {
+          console.error('Error al eliminar la categoria en la base de datos' + err);
+      } else {
+          console.log(result);
+          if(result.affectedRows === 0)
+          {
+            res.json({ message: 'No existe una categoria con esa ID' });
+          }
+          else
+          {
+            res.json({ message: 'Categoria eliminada exitosamente.' });
+          }
+      }
+    })  
+  } catch (err) {
+      res.status(500).json({ error: 'No se pudo eliminar la categoria' });
+  }
+};
+

@@ -1,0 +1,107 @@
+const fs = require('fs');
+const Empresa = require('../models/empresaModel');
+const EmpresaDAO = require('../dataAccess/empresaDAO');
+const dataPath = './data/empresa.json';
+
+// Funciones del controlador
+exports.getAllEmpresas = async (req, res) => {
+  try {
+    await EmpresaDAO.consultarEmpresas((result, err) => {
+        if (err) {
+            console.error('Error al consultar la base de datos' + err);
+        } else {
+            //console.log(result);
+            res.json(result);
+        }
+    })
+    
+  } catch (err) {
+    res.status(500).json({ error: 'No se pudieron obtener las empresas' });
+  }
+};
+
+exports.getEmpresaById = async (req, res) => {
+  const empresaId = req.params.id;
+
+  try {
+    await EmpresaDAO.consultarEmpresaId(empresaId, (result, err) => {
+      if (err) {
+          console.error('Error al consultar la base de datos' + err);
+      } else {
+          //console.log(result);
+          if (result.length === 0) {
+            return res.status(404).json({ error: 'Empresa no encontrada.' });
+          }
+          res.status(200).json(result);
+      }
+    })  
+  } catch (err) {
+      res.status(500).json({ error: 'No se pudo obtener la empresa.' });
+  }
+};
+
+exports.addEmpresa = async (req, res) => {
+  try {
+      const datosNuevaEmpresa = new Empresa(req.body.id, req.body.nombre, req.body.descripcion);
+
+      await EmpresaDAO.insertarEmpresa(datosNuevaEmpresa, (result, err) => {
+        if (err) {
+            console.error('Error al insertar en la base de datos' + err);
+        } else {
+            console.log(result);
+            res.json(datosNuevaEmpresa);
+        }
+      })  
+  } catch (err) {
+      res.status(500).json({ error: 'No se pudo agregar la empresa' });
+  }
+};
+
+exports.updateEmpresa = async (req, res) => {
+  const datosEmpresaActualizar = new Empresa(req.params.id, req.body.nombre, req.body.descripcion);
+
+  try {
+    await EmpresaDAO.actualizarEmpresa(datosEmpresaActualizar, (result, err) => {
+      if (err) {
+          console.error('Error al actualizar en la base de datos' + err);
+      } else {
+          console.log(result);
+          if(result.affectedRows === 0)
+          {
+            res.json({ message: 'No existe una empresa con esa ID' });
+          }
+          else
+          {
+            res.json({ message: 'Empresa actualizada exitosamente.' });
+          }
+      }
+    })  
+  } catch (err) {
+      res.status(500).json({ error: 'No se pudo actualizar la empresa' });
+  }
+};
+
+exports.deleteEmpresa = async (req, res) => {
+  const empresaEliminarId = req.params.id;
+
+  try {
+    await EmpresaDAO.eliminarEmpresa(empresaEliminarId, (result, err) => {
+      if (err) {
+          console.error('Error al eliminar la empresa en la base de datos' + err);
+      } else {
+          console.log(result);
+          if(result.affectedRows === 0)
+          {
+            res.json({ message: 'No existe una empresa con esa ID' });
+          }
+          else
+          {
+            res.json({ message: 'Empresa eliminada exitosamente.' });
+          }
+      }
+    })  
+  } catch (err) {
+      res.status(500).json({ error: 'No se pudo eliminar la empresa' });
+  }
+};
+

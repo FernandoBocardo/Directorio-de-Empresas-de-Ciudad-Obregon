@@ -16,21 +16,6 @@ class EmpresaDAO {
         })
     }
 
-    // insertProductPromise(producto) {
-    //     return new Promise((resolve, reject) => {
-    //         const insertQuery = `INSERT INTO products (nombre, precio, descripcion) VALUES 
-    //                             ('${producto.name}', ${producto.price}, '${producto.description}')`
-
-    //         db.query(insertQuery, (err, result) => {
-    //             if (err) {
-    //                 reject(err);
-    //             } else {
-    //                 resolve(result);
-    //             }
-    //         })
-    //     })
-    // }
-
     consultarEmpresas(callback) {
         const selectQuery = `SELECT * FROM empresas`;
 
@@ -43,19 +28,17 @@ class EmpresaDAO {
         })
     }
 
-    // selectProductsPromise() {
-    //     return new Promise((resolve, reject) => {
-    //         const selectQuery = `SELECT * FROM products`;
+    consultarEmpresaId(idEmpresa, callback) {
+        const selectQuery = `SELECT * FROM empresas WHERE (id = '${idEmpresa}')`;
 
-    //         db.query(selectQuery, (err, result) => {
-    //             if (err) {
-    //                 reject(err);
-    //             } else {
-    //                 resolve(result);
-    //             }
-    //         })
-    //     })
-    // }
+        db.query(selectQuery, (err, result) => {
+            if (err) {
+                callback(err);
+            } else {
+                callback(result);
+            }
+        })
+    }
 
     actualizarEmpresa(empresa, callback) {
         const updateQuery = ` UPDATE empresas SET nombre = '${empresa.nombre}', ubicacion = '${empresa.ubicacion}', telefono = '${empresa.telefono}', descripcion = '${empresa.descripcion}', horario = '${empresa.horario}', tipoEmpresa = '${empresa.tipoEmpresa}', idCategoria = '${empresa.idCategoria}' WHERE (id = ${empresa.id})`
@@ -68,19 +51,6 @@ class EmpresaDAO {
         })
     }
 
-    // updateProductsPromise(producto) {
-    //     return new Promise((resolve, reject) => {
-    //         const updateQuery = ` UPDATE products SET nombre = '${producto.name}', precio = ${producto.price}, descripcion = '${producto.description}' WHERE (id = ${producto.id})`
-    //         db.query(updateQuery, (err, result) => {
-    //             if (err) {
-    //                 reject(err);
-    //             } else {
-    //                 resolve(result);
-    //             }
-    //         })
-    //     })
-    // }
-
     eliminarEmpresa(id, callback) {
         const updateQuery = ` DELETE FROM empresas WHERE (id = ${id})`
         db.query(updateQuery, (err, result) => {
@@ -91,19 +61,6 @@ class EmpresaDAO {
             }
         })
     }
-
-    // deleteProductPromise(id) {
-    //     return new Promise((resolve, reject) => {
-    //         const updateQuery = ` DELETE FROM products WHERE (id = ${id})`
-    //         db.query(updateQuery, (err, result) => {
-    //             if (err) {
-    //                 reject(err);
-    //             } else {
-    //                 resolve(result);
-    //             }
-    //         })
-    //     })
-    // }
 }
 
 module.exports = new EmpresaDAO();
