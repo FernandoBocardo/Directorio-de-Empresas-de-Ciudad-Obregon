@@ -2,6 +2,18 @@ const fs = require('fs');
 const Empresa = require('../models/empresaModel');
 const EmpresaDAO = require('../dataAccess/empresaDAO');
 const dataPath = './data/empresa.json';
+const Joi = require('joi');
+
+const schemaEmpresa = Joi.object({
+  id:Joi.number().integer().min(1).required(),
+  nombre: Joi.string().min(3).required(),
+  ubicacion: Joi.string().min(10).required(),
+  telefono: Joi.string().min(10).max(10).required(),
+  descripcion: Joi.string().min(10).required(),
+  horario: Joi.string().min(10).required(),
+  tipoEmpresa: Joi.string().min(10).required(),
+  idCategoria: Joi.number().integer().min(1).required(),
+});
 
 // Funciones del controlador
 exports.getAllEmpresas = async (req, res) => {
@@ -41,15 +53,21 @@ exports.getEmpresaById = async (req, res) => {
 };
 
 exports.addEmpresa = async (req, res) => {
+  const { error, value } = schemaEmpresa.validate(req.body);
+
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
+
   try {
-      const datosNuevaEmpresa = new Empresa(req.body.id, req.body.nombre, req.body.descripcion);
+      const datosNuevaEmpresa = new Empresa(req.body.id, req.body.nombre, req.body.ubicacion, req.body.telefono, req.body.descripcion, req.body.horario, req.body.tipoEmpresa, req.body.idCategoria);
 
       await EmpresaDAO.insertarEmpresa(datosNuevaEmpresa, (result, err) => {
         if (err) {
             console.error('Error al insertar en la base de datos' + err);
         } else {
             console.log(result);
-            res.json(datosNuevaEmpresa);
+            res.json({ message: 'Empresa agregada exitosamente.' });
         }
       })  
   } catch (err) {
@@ -58,9 +76,15 @@ exports.addEmpresa = async (req, res) => {
 };
 
 exports.updateEmpresa = async (req, res) => {
-  const datosEmpresaActualizar = new Empresa(req.params.id, req.body.nombre, req.body.descripcion);
+  const { error, value } = schemaEmpresa.validate(req.body);
+
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
 
   try {
+    const datosEmpresaActualizar = new Empresa(req.params.id, req.body.nombre, req.body.ubicacion, req.body.telefono, req.body.descripcion, req.body.horario, req.body.tipoEmpresa, req.body.idCategoria);
+
     await EmpresaDAO.actualizarEmpresa(datosEmpresaActualizar, (result, err) => {
       if (err) {
           console.error('Error al actualizar en la base de datos' + err);

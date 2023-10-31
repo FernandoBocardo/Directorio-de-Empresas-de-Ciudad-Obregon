@@ -2,6 +2,13 @@ const fs = require('fs');
 const Categoria = require('../models/categoriaModel');
 const CategoriaDAO = require('../dataAccess/categoriaDAO');
 const dataPath = './data/categoria.json';
+const Joi = require('joi');
+
+const schemaCategoria = Joi.object({
+  id:Joi.number().integer().min(1).required(),
+  nombre: Joi.string().min(3).required(),
+  descripcion: Joi.string().min(10).required(),
+});
 
 // Funciones del controlador
 exports.getAllCategorias = async (req, res) => {
@@ -41,6 +48,12 @@ exports.getCategoriaById = async (req, res) => {
 };
 
 exports.addCategoria = async (req, res) => {
+  const { error, value } = schemaCategoria.validate(req.body);
+
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
+
   try {
       const datosNuevaCategoria = new Categoria(req.body.id, req.body.nombre, req.body.descripcion);
 
@@ -49,7 +62,7 @@ exports.addCategoria = async (req, res) => {
             console.error('Error al insertar en la base de datos' + err);
         } else {
             console.log(result);
-            res.json(datosNuevaCategoria);
+            res.json({ message: 'Categoria agregada exitosamente.' });
         }
       })  
   } catch (err) {
@@ -58,9 +71,15 @@ exports.addCategoria = async (req, res) => {
 };
 
 exports.updateCategoria = async (req, res) => {
-  const datosCategoriaActualizar = new Categoria(req.params.id, req.body.nombre, req.body.descripcion);
+  const { error, value } = schemaCategoria.validate(req.body);
+
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
 
   try {
+    const datosCategoriaActualizar = new Categoria(req.params.id, req.body.nombre, req.body.descripcion);
+
     await CategoriaDAO.actualizarCategoria(datosCategoriaActualizar, (result, err) => {
       if (err) {
           console.error('Error al actualizar en la base de datos' + err);
