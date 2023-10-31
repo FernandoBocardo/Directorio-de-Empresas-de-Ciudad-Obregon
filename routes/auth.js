@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const Joi = require('joi');
 const Usuario = require('../models/usuarioModel');
 const UsuarioDAO = require('../dataAccess/usuarioDAO');
@@ -24,36 +24,61 @@ router.post('/login', async (req, res) => {
     }
     var resultado;
      try {
-        await UsuarioDAO.consultarUsuarioCorreo(req.body.correo, (result, err) => {
+        UsuarioDAO.consultarUsuarioCorreo(req.body.correo, (result, err) => {
             if (err) {
                 console.error('Error al consultar la base de datos' + err);
             } else {
-                //console.log(result);
+                resultado = result[0];
                 if (result.length === 0) {
                   return res.status(404).json({ error: 'El correo introducido no esta registrado' });
                 }
-                resultado = result[0];
-            }
-          })
-          console.log(req.body.password)
-          console.log(resultado.password);
-          const esContraseñaValida = await bcrypt.compare(req.body.password, resultado[0].password);
-          console.log(esContraseñaValida);
-          if (!esContraseñaValida) {
+                console.log("a");
+                
+                console.log("b");
+                console.log(resultado);
+                console.log(req.body.password)
+          console.log(resultado);
+          //const esContraseñaValida = comparar(req.body.password, resultado.password);
+
+          comparar(req.body.password, resultado.password)
+          .then((esValida) => {
+            if (esValida) {
+                console.log('La contraseña es válida');
+                const expiresIn = 40; // 60 segundos (1 minutos)
+                const token = jwt.sign({ userId: result[0].id }, secretKey, { expiresIn });
+                res.json({ token });
+                console.log(token);
+            } else {
+              console.log('La contraseña no es válida');
               res.status(401).json({ mensaje: 'El correo o la contraseña son incorrectos' });
               return;
-          }
+            }
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+
+          //console.log(esContraseñaValida);
+          //if (!esContraseñaValida) {
+             // res.status(401).json({ mensaje: 'El correo o la contraseña son incorrectos' });
+             // return;
+          //}
   
-          const expiresIn = 40; // 60 segundos (1 minutos)
-  
-          const token = jwt.sign({ userId: result[0].id }, secretKey, { expiresIn });
-  
-          res.json({ token });
-          console.log(token)
+          
+            }
+          })
+          
 
      } catch (error) {
+        console.log(error);
          res.status(500).json({ mensaje: 'Error al iniciar sesión' });
      }
 });
+
+async function comparar(password1, password2)
+{
+    const esContraseñaValida = bcrypt.compare(password1, password2);
+    return esContraseñaValida;
+}
 
 module.exports = router;
