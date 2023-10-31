@@ -39,6 +39,18 @@ class UsuarioDAO {
         })
     }
 
+    consultarUsuarioCorreo(correoUsuario, callback) {
+        const selectQuery = `SELECT * FROM usuarios WHERE (correo = '${correoUsuario}')`;
+
+        db.query(selectQuery, (err, result) => {
+            if (err) {
+                callback(err);
+            } else {
+                callback(result);
+            }
+        })
+    }
+
     actualizarUsuario(usuario, callback) {
         const updateQuery = ` UPDATE usuarios SET nombre = '${usuario.nombre}', correo = '${usuario.correo}', password = '${usuario.password}' WHERE (id = ${usuario.id})`
         db.query(updateQuery, (err, result) => {

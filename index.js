@@ -12,6 +12,8 @@ const empresaRoutes = require('./routes/empresa');
 app.use('/empresa', empresaRoutes);
 const usuarioRoutes = require('./routes/usuario');
 app.use('/usuario', usuarioRoutes);
+const authRoutes = require('./routes/auth');
+app.use('/auth', authRoutes);
 
 // Middleware de errores
 //const errorHandler = require('./middlewares/errorHandler');
