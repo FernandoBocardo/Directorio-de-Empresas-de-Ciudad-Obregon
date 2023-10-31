@@ -18,7 +18,7 @@ exports.getAllCategorias = async (req, res) => {
             console.error('error al consultar la base de datos' + err);
         } else {
             //console.log(result);
-            res.json(result);
+            res.status(200).json(result);
         }
     })
     
@@ -62,7 +62,7 @@ exports.addCategoria = async (req, res) => {
             console.error('Error al insertar en la base de datos' + err);
         } else {
             console.log(result);
-            res.json({ message: 'Categoria agregada exitosamente.' });
+            res.status(200).json({ message: 'Categoria agregada exitosamente.' });
         }
       })  
   } catch (err) {
@@ -87,11 +87,11 @@ exports.updateCategoria = async (req, res) => {
           console.log(result);
           if(result.affectedRows === 0)
           {
-            res.json({ message: 'No existe una categoria con esa ID' });
+            res.status(404).json({ message: 'No existe una categoria con esa ID' });
           }
           else
           {
-            res.json({ message: 'Categoria actualizada exitosamente.' });
+            res.status(200).json({ message: 'Categoria actualizada exitosamente.' });
           }
       }
     })  
@@ -111,11 +111,11 @@ exports.deleteCategoria = async (req, res) => {
           console.log(result);
           if(result.affectedRows === 0)
           {
-            res.json({ message: 'No existe una categoria con esa ID' });
+            res.status(404).json({ message: 'No existe una categoria con esa ID' });
           }
           else
           {
-            res.json({ message: 'Categoria eliminada exitosamente.' });
+            res.status(200).json({ message: 'Categoria eliminada exitosamente.' });
           }
       }
     })  

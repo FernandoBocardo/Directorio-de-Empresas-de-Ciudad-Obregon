@@ -32,21 +32,13 @@ router.post('/login', async (req, res) => {
                 if (result.length === 0) {
                   return res.status(404).json({ error: 'El correo introducido no esta registrado' });
                 }
-                console.log("a");
-                
-                console.log("b");
-                console.log(resultado);
-                console.log(req.body.password)
-          console.log(resultado);
-          //const esContraseñaValida = comparar(req.body.password, resultado.password);
-
           comparar(req.body.password, resultado.password)
           .then((esValida) => {
             if (esValida) {
                 console.log('La contraseña es válida');
                 const expiresIn = 40; // 60 segundos (1 minutos)
                 const token = jwt.sign({ userId: result[0].id }, secretKey, { expiresIn });
-                res.json({ token });
+                res.status(200).json({ token });
                 console.log(token);
             } else {
               console.log('La contraseña no es válida');
@@ -56,15 +48,8 @@ router.post('/login', async (req, res) => {
           })
           .catch((error) => {
             console.error('Error:', error);
-          });
-
-          //console.log(esContraseñaValida);
-          //if (!esContraseñaValida) {
-             // res.status(401).json({ mensaje: 'El correo o la contraseña son incorrectos' });
-             // return;
-          //}
-  
-          
+            res.status(500).json(error);
+          });          
             }
           })
           

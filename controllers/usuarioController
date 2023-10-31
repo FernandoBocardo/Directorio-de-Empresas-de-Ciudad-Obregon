@@ -22,7 +22,7 @@ exports.getAllUsuarios = async (req, res) => {
             console.error('error al consultar la base de datos' + err);
         } else {
             //console.log(result);
-            res.json(result);
+            res.status(200).json(result);
         }
     })
     
@@ -68,7 +68,7 @@ exports.addUsuario = async (req, res) => {
             console.error('Error al insertar en la base de datos' + err);
         } else {
             console.log(result);
-            res.json({ message: 'Usuario agregado exitosamente.' });
+            res.status(200).json({ message: 'Usuario agregado exitosamente.' });
         }
       })  
   } catch (err) {
@@ -93,11 +93,11 @@ exports.updateUsuario = async (req, res) => {
           console.log(result);
           if(result.affectedRows === 0)
           {
-            res.json({ message: 'No existe un usuario con esa ID' });
+            res.status(404).json({ message: 'No existe un usuario con esa ID' });
           }
           else
           {
-            res.json({ message: 'Usuario actualizado exitosamente.' });
+            res.status(200).json({ message: 'Usuario actualizado exitosamente.' });
           }
       }
     })  
@@ -117,11 +117,11 @@ exports.deleteUsuario = async (req, res) => {
           console.log(result);
           if(result.affectedRows === 0)
           {
-            res.json({ message: 'No existe un usuario con esa ID' });
+            res.status(404).json({ message: 'No existe un usuario con esa ID' });
           }
           else
           {
-            res.json({ message: 'Usuario eliminado exitosamente.' });
+            res.status(200).json({ message: 'Usuario eliminado exitosamente.' });
           }
       }
     })  
