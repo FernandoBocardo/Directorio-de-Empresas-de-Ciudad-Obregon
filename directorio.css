@@ -72,12 +72,59 @@ h1{
 
 
 hr{
-    border: 2px solid white;
-    margin-top: 20px;
+    border: 2px solid #FF6816;
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+
+/* Agrega estilos para las tarjetas */
+/* Estilos mejorados para la tarjeta */
+
+.cont{
+    max-width: 1200px;
+    margin: 0 auto;
+
+}
+
+.tarjeta {
+    background-color: #39424E;
+    border: 2px solid #6C757D;
+    color: #FFFFFF;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 15px;
+    width: calc(33.33% - 30px);
+    box-sizing: border-box;
+    display: inline-block;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+    overflow: hidden; /* Evita que el borde redondeado se vea afectado por el sombreado */
+}
+
+.tarjeta:hover {
+    background-color: #57626E;
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.tarjeta p {
+    margin-bottom: 15px; /* Más espacio entre párrafos para mejorar la legibilidad */
+    line-height: 1.4; /* Mejora la altura de línea para facilitar la lectura */
+}
+
+.tarjeta strong {
+    color: #FF6816;
 }
 
 
-/* .footer{
+
+nav {
+    text-align: center;
+}
+
+
+
+ .footer{
     padding: 20px 0;
     background-color: #191A1F;
 }
@@ -162,4 +209,4 @@ hr{
 
 }
 
- */
+ 

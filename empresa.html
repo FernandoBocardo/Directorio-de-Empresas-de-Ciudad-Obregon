@@ -32,8 +32,8 @@
 
       <div class="contenedor">
       <div class="form-container">
-        <h1>Registrar de Empresa</h1>
-        <form action="/registrar_empresa" method="POST">
+        <h1>Registrar Empresa</h1>
+        <form id="formularioEmpresa">
             <div class="form-group">
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" required>
@@ -65,11 +65,14 @@
             </div>
             
             <div class="form-group">
-                <label for="idCategoria">ID de Categoría:</label>
-                <input type="text" id="idCategoria" name="idCategoria" required>
-            </div>
+              <label for="idCategoria">Categoría:</label>
+              <select id="idCategoria" name="idCategoria" required>
+                  <!-- Opciones se llenarán dinámicamente desde JavaScript -->
+              </select>
+          </div>
+          
             
-            <input type="submit" value="Registrar Empresa">
+            <button type="button" onclick="enviarFormulario()">Registrar Empresa</button>
         </form>
     </div>
     </div>
@@ -105,6 +108,7 @@
       
       </footer>
 
+      <script src="empresa.js"></script>
 
 </body>
 </html>

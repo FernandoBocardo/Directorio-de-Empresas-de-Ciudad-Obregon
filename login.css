@@ -19,6 +19,13 @@ body {
 
 /* Resto del CSS sigue igual */
 
+p {
+    text-align: center;
+    color: white;
+    margin-top: 20px;
+    font-weight: bold;
+    }
+
 
 h2 {
     text-align: center;
