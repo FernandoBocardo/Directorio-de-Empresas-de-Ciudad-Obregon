@@ -7,7 +7,7 @@
 <body>
     <div class="login-container">
         <h2>Login</h2>
-        <form action="/login" method="POST">
+        <form id="formularioLogin">
             <div class="input-group">
                 <label for="correo">Correo electrónico:</label>
                 <input type="email" id="correo" name="correo" required>
@@ -16,9 +16,12 @@
                 <label for="password">Contraseña:</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            <button type="submit">Iniciar Sesión</button>
+            <button type="button" onclick="login()">Iniciar Sesión</button>
         </form>
         <p>No tienes una cuenta? <a href="registro.html">Regístrate aquí</a></p>
     </div>
+
+    <script src="login.js"></script>
+
 </body>
 </html>

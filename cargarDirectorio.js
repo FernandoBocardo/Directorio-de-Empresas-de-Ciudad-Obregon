@@ -8,9 +8,15 @@ document.addEventListener('DOMContentLoaded', function () {
 function obtenerDatosYActualizarMenu() {
     // URL del servicio RESTful para obtener empresas
     const urlEmpresas = 'http://localhost:3000/empresa';
+    const token = localStorage.getItem('token');
 
     // Realiza la solicitud para obtener las empresas utilizando la Fetch API
-    fetch(urlEmpresas)
+    fetch(urlEmpresas, {
+        method: 'GET',
+        headers: {
+            'Authorization': token
+        }
+    })
         .then(response => {
             // Verifica si la solicitud fue exitosa (código de estado 200)
             if (!response.ok) {

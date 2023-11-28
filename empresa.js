@@ -29,42 +29,68 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-   function enviarFormulario() {
+async function enviarFormulario() {
     var formulario = document.getElementById('formularioEmpresa');
-    var formData = new FormData(formulario);
+    const nombre = document.getElementById('nombre').value;
+    const ubicacion = document.getElementById('ubicacion').value;
+    const telefono = document.getElementById('telefono').value;
+    const descripcion = document.getElementById('descripcion').value;
+    const horario = document.getElementById('horario').value;
+    const tipoEmpresa = document.getElementById('tipoEmpresa').value;
+    const idCategoria = document.getElementById('idCategoria').value;
 
-    var jsonObject = {};
-    formData.forEach(function (value, key) {
-        jsonObject[key] = value;
-    });
 
-    // El valor seleccionado del select estará en jsonObject.idCategoria
-    var jsonData = JSON.stringify(jsonObject);
+    if (nombre.length <= 0) {
+        alert("El nombre no puede estar vacio");
+        return;
+    }
 
-    fetch('http://localhost:3000/empresa', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: jsonData
-    })
-    .then(response => {
+    if (ubicacion.length <= 0) {
+        alert("La ubicacion no puede estar vacia");
+        return;
+    }
+
+    if (!/^\d{10}$/.test(telefono)) {
+        alert("Por favor, ingrese un número de teléfono válido de 10 dígitos.");
+        return;
+    }
+
+    if (descripcion.length <= 0) {
+        alert("La descripcion no puede estar vacia");
+        return;
+    }
+
+    if (horario.length <= 0) {
+        alert("El horario no puede estar vacio");
+        return;
+    }
+
+    if (tipoEmpresa.length <= 0) {
+        alert("El tipo de la empresa no puede estar vacio");
+        return;
+    }
+
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:3000/empresa', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+            body: JSON.stringify({ nombre, ubicacion, telefono, descripcion, horario, tipoEmpresa, idCategoria }),
+        });
+        
         if (!response.ok) {
-            throw new Error('Error en la solicitud. Por favor, inténtelo de nuevo.');
+            const { error } = await response.json();
+            //console.error(mensaje);
+            throw new Error(error);
         }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Respuesta del servidor:', data);
 
         alert('La empresa se registró correctamente.'); // Alerta de éxito
         formulario.reset(); // Limpiar el formulario
-
-        // Puedes realizar cualquier otra acción para actualizar el formulario aquí
-
-    })
-    .catch(error => {
-        console.error('Error al enviar la solicitud:', error);
+    } catch (error) {
+        console.error(error.message);
         alert(error.message);
-    });
+    }
 }
