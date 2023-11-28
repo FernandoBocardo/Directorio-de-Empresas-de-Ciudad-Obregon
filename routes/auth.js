@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const Joi = require('joi');
 const Usuario = require('../models/usuarioModel');
 const UsuarioDAO = require('../dataAccess/usuarioDAO');
+const cookieParser = require('cookie-parser');
 
 // Cargar la clave secreta desde las variables de entorno
 const secretKey = "CLAVESECRETAOWOXD";
@@ -36,8 +37,10 @@ router.post('/login', async (req, res) => {
           .then((esValida) => {
             if (esValida) {
                 console.log('La contraseña es válida');
-                const expiresIn = 40; // 60 segundos (1 minutos)
-                const token = jwt.sign({ userId: result[0].id }, secretKey, { expiresIn });
+                //const expiresIn = 40; // 60 segundos (1 minutos)
+                const token = jwt.sign({ userId: result[0].id }, secretKey, { expiresIn: '1h' });
+                //const token = jwt.sign({ userId: result[0].id }, secretKey, { expiresIn });
+                // Configura una cookie con el token
                 res.status(200).json({ token });
                 console.log(token);
             } else {

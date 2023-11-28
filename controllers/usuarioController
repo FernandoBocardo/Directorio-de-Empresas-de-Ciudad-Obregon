@@ -12,6 +12,12 @@ const schemaUsuario = Joi.object({
   password: Joi.string().min(4).required(),
 });
 
+const schemaUsuarioRegistrar = Joi.object({
+  nombre: Joi.string().min(3).required(),
+  correo: Joi.string().email().required(),
+  password: Joi.string().min(4).required(),
+});
+
 const secretKey = process.env.SECRET_KEY;
 
 // Funciones del controlador
@@ -52,7 +58,7 @@ exports.getUsuarioById = async (req, res) => {
 };
 
 exports.addUsuario = async (req, res) => {
-  const { error, value } = schemaUsuario.validate(req.body);
+  const { error, value } = schemaUsuarioRegistrar.validate(req.body);
 
   if (error) {
     return res.status(400).json({ error: error.details[0].message });

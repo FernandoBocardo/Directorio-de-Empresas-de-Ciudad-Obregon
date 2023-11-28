@@ -1,6 +1,17 @@
 const db = require('./config/db.js');
 const express = require('express');
 const app = express();
+const cookieParser = require('cookie-parser');
+
+app.use(cookieParser());
+
+// Permitir solicitudes desde cualquier origen
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); 
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  next();
+});
 
 // Middleware para analizar JSON
 app.use(express.json());
@@ -15,9 +26,7 @@ app.use('/usuario', usuarioRoutes);
 const authRoutes = require('./routes/auth');
 app.use('/auth', authRoutes);
 
-// Middleware de errores
-//const errorHandler = require('./middlewares/errorHandler');
-//app.use(errorHandler);
+
 
 const PORT = 3000;
 app.listen(PORT, () => {
